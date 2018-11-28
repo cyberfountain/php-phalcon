@@ -5,7 +5,7 @@ ENV XDEBUG_REMOTE_HOST "192.168.0.5"
 ENV XDEBUG_IDE_KEY "PHPSTORM"
 ENV XDEBUG_PORT "7765"
 
-ENV PHALCON_VERSION=3.4.1
+ENV PHALCON_VERSION=3.2.2
 
 RUN apk add --update --virtual build-dependencies \
         build-base \
