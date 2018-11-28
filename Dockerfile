@@ -23,7 +23,7 @@ RUN apk add --update --virtual build-dependencies \
         make \
         pcre-dev \
         re2c \
-    && pecl install xdebug-2.6.0 \
+    && pecl install xdebug-2.6.1 \
     && docker-php-ext-install mysqli pdo pdo_mysql zip gd gettext
 
 RUN set -xe && \
@@ -31,6 +31,18 @@ RUN set -xe && \
     tar xzf v${PHALCON_VERSION}.tar.gz && cd cphalcon-${PHALCON_VERSION}/build && sh install && \
     echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini && \
     cd ../.. && rm -rf v${PHALCON_VERSION}.tar.gz cphalcon-${PHALCON_VERSION}
+
+# Memory Limit
+RUN echo "memory_limit=2048M" > $PHP_INI_DIR/conf.d/memory-limit.ini
+RUN echo "max_execution_time=900" >> $PHP_INI_DIR/conf.d/memory-limit.ini
+RUN echo "post_max_size=20M" >> $PHP_INI_DIR/conf.d/memory-limit.ini
+RUN echo "upload_max_filesize=20M" >> $PHP_INI_DIR/conf.d/memory-limit.ini
+
+# Disable PathInfo
+RUN echo "cgi.fix_pathinfo=0" > $PHP_INI_DIR/conf.d/path-info.ini
+
+# Time Zone
+RUN echo 'date.timezone="Europe/London"' > $PHP_INI_DIR/conf.d/date_timezone.ini
 
 COPY entrypoint/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
