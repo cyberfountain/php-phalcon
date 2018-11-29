@@ -6,17 +6,18 @@ ENV XDEBUG_IDE_KEY "PHPSTORM"
 ENV XDEBUG_PORT "7765"
 ENV APPLICATION_ENV "development"
 
-ENV PHALCON_VERSION=3.4.1
+ENV DB_HOST "192.168.0.5"
+ENV DB_USER "admin"
+ENV DB_PASSWORD "admin"
+ENV DB_DATABASE "db"
+
+ARG PHALCON_VERSION=3.4.1
 
 RUN apk add --update --virtual build-dependencies \
         build-base \
         curl-dev \
         libzip-dev \
-        freetype-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
-        libxml2-dev \
-        gettext-dev \
+	postgresql-dev \
         autoconf \
         file \
         g++ \
@@ -25,9 +26,8 @@ RUN apk add --update --virtual build-dependencies \
         pcre-dev \
         re2c \
     && pecl install xdebug-2.6.1 \
-    && docker-php-ext-install mysqli pdo pdo_mysql zip \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd gettext
+    && pecl install redis && docker-php-ext-enable redis \
+    && docker-php-ext-install pdo pdo_pgsql zip
 
 RUN set -xe && \
     curl -LO https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz && \
