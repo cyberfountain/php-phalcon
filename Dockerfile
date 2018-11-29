@@ -25,7 +25,9 @@ RUN apk add --update --virtual build-dependencies \
         pcre-dev \
         re2c \
     && pecl install xdebug-2.6.1 \
-    && docker-php-ext-install mysqli pdo pdo_mysql zip gd gettext
+    && docker-php-ext-install mysqli pdo pdo_mysql zip \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) gd gettext
 
 RUN set -xe && \
     curl -LO https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz && \
