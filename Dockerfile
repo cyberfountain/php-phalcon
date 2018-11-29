@@ -11,7 +11,7 @@ ENV DB_USER "admin"
 ENV DB_PASSWORD "admin"
 ENV DB_DATABASE "db"
 
-ARG PHALCON_VERSION=3.2.2
+ARG PHALCON_VERSION=3.4.1
 
 RUN apk add --update --virtual build-dependencies \
         build-base \
